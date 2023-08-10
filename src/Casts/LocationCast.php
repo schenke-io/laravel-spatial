@@ -19,6 +19,14 @@ class LocationCast implements CastsAttributes, SerializesCastableAttributes
             return null;
         }
 
+        /*
+         * if the data is returned in binary format, unpack the binary stream 
+         */
+        if ($coordinates = unpack('x/x/x/x/corder/Ltype/dlatitude/dlongitude', $value)) {
+            return new Point(lat: (float)$coordinates['latitude'], lng: (float)$coordinates['longitude']);
+        }
+
+        
         $coordinates = explode(',', $value);
 
         if (count($coordinates) > 1) {
